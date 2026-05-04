@@ -108,6 +108,8 @@ Persistent database for conversation history
 Deploy on cloud (Streamlit Cloud / AWS)
 Add tool plugins (PDF reader, database queries)
 Improve code execution sandbox security
+
+
 👩‍💻 Author
 
 Madhumitha Jyothi Prasad
