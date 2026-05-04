@@ -3,27 +3,34 @@ import os
 import subprocess
 import tempfile
 import json
+import streamlit as st
 
 from dotenv import load_dotenv
+import streamlit as st
 from typing import TypedDict, Literal
 from langchain_groq import ChatGroq
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langgraph.graph import StateGraph, END
 
-load_dotenv(dotenv_path=".env")  # ✅ separate line
+# Load local .env (for development)
+load_dotenv()
+
+# Get API keys (works for both local + Streamlit Cloud)
+groq_api_key = os.getenv("GROQ_API_KEY") or st.secrets["GROQ_API_KEY"]
+tavily_api_key = os.getenv("TAVILY_API_KEY") or st.secrets["TAVILY_API_KEY"]
+
 # ── LLM setup ──────────────────────────────────────────────────────────────
 llm = ChatGroq(
-    api_key=os.getenv("GROQ_API_KEY"),
+    api_key=groq_api_key,
     model_name="llama-3.1-8b-instant",
     temperature=0
 )
 
 # ── Tavily search tool ──────────────────────────────────────────────────────
 search_tool = TavilySearchResults(
-    api_key=os.getenv("TAVILY_API_KEY"),
+    api_key=tavily_api_key,
     max_results=5
 )
-
 # ── Agent state ─────────────────────────────────────────────────────────────
 class AgentState(TypedDict):
     question: str
